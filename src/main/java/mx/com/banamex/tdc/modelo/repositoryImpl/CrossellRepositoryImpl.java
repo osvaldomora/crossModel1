@@ -64,7 +64,7 @@ public class CrossellRepositoryImpl implements CrossellRepository {
 		} catch (DuplicateKeyException e) {
 			log.debug("[ Error en duplicado ]\n", e);
 		}
-		return false;//siempre me regresa falso
+		return false;
 	}
 
 	public List<CrossellEntity> getAllCamposCrosselCTE() {

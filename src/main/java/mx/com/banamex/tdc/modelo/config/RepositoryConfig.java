@@ -62,6 +62,7 @@ public class RepositoryConfig {
 			dataSource = (javax.sql.DataSource) context.lookup("ds_c719_002");
 			this.ds = dataSource;
 			context.close();
+			log.info("configurando datasource");
 			return dataSource;
 		} catch (NamingException e) {
 			log.error("[ NamingException ]", e);
@@ -83,6 +84,7 @@ public class RepositoryConfig {
 
 	@Bean(name = "sessionFactoryBean", destroyMethod = "")
 	public LocalSessionFactoryBean sessionFactoryBean() {
+		log.info("sessionFactoryBean");
 		LocalSessionFactoryBean asfb = new LocalSessionFactoryBean();
 		asfb.setHibernateProperties(getHibernateProperties());
 		asfb.setDataSource(getDatasourceConfiguration());

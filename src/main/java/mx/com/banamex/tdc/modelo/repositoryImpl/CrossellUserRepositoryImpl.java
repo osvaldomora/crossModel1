@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.exception.ConstraintViolationException;
@@ -16,44 +18,67 @@ import org.springframework.stereotype.Repository;
 
 import mx.com.banamex.tdc.modelo.entity.CrosselUserEntity;
 import mx.com.banamex.tdc.modelo.repository.CrossellUserRepository;
+import mx.com.banamex.tdc.modelo.serviceImpl.CrossellAdminServicesImpl;
 
 @Repository
 @Transactional
 public class CrossellUserRepositoryImpl implements CrossellUserRepository {
-	
+	private static final Logger logger = LogManager.getLogger(CrossellUserRepositoryImpl.class);
 	@Autowired
 	HibernateTemplate hibernateTemplate;
 	@Autowired
 	SessionFactory sessionFactory;
 
 	public boolean insertUser(CrosselUserEntity user) throws NoSuchAlgorithmException, ConstraintViolationException {
-		user.setCrossellUserPwd(getEncryptedPWD(user.getCrossellUserPwd()));
+//		user.setCrossellUserPwd(getEncryptedPWD(user.getCrossellUserPwd()));
+		user.setCrossellUserPwd("1");
 		hibernateTemplate.save(user);
 		return true;
 	}
 
 	public boolean updateUser(CrosselUserEntity user) throws NoSuchAlgorithmException {
-		user.setCrossellUserPwd(getEncryptedPWD(user.getCrossellUserPwd()));
-		System.out.println("encripto la contraseña despues guardo");
+		try {
+//		user.setCrossellUserPwd(getEncryptedPWD(user.getCrossellUserPwd()));
+//		logger.info("encripto la contraseña "+user.getCrossellUserPwd());
 		hibernateTemplate.update(user);
+		
+		logger.info("guardo en DB ");
 		return true;
+	}catch (Exception e) {
+		logger.info(e);
+		return false;
 	}
+	}
+	
+	
+	public boolean deleteUser(CrosselUserEntity user) throws NoSuchAlgorithmException {
+		try {
+		
+		hibernateTemplate.delete(user);
+		
+		logger.info("elimino en DB ");
+		return true;
+	}catch (Exception e) {
+		logger.info(e);
+		return false;
+	}
+	}
+	
 //CrosselUserEntity
 	@SuppressWarnings("unchecked")//verifica si alguien ya se registro
 	public boolean login(CrosselUserEntity user) throws NoSuchAlgorithmException {
-		String query = "FROM CrosselUserEntity where crossellUserSoeid=? and crossellUserPwd=? and crosselUserEstatus=?";
-		//String query = "FROM CrosselUserEntity where crossellUserSoeid=?  and crosselUserEstatus=?";
-		System.out.println("antes de fROM CrosselUserEntity where crossellUserSoeid=? and crossellUserPwd=? and crosselUserEstatus=?");
-		System.out.println(user.getCrossellUserPwd());
-		user.setCrossellUserPwd(getEncryptedPWD(user.getCrossellUserPwd()));//establece la contra encriptada del loging
+		//String query = "FROM CrosselUserEntity where crossellUserSoeid=? and crossellUserPwd=? and crosselUserEstatus=?";
+		String query = "FROM CrosselUserEntity where crossellUserSoeid=?  and crosselUserEstatus=?";
+//		System.out.println("antes de fROM CrosselUserEntity where crossellUserSoeid=? and crossellUserPwd=? and crosselUserEstatus=?");
+		logger.info(user.getCrossellUserPwd());
+//		user.setCrossellUserPwd(getEncryptedPWD(user.getCrossellUserPwd()));//establece la contra encriptada del loging
 		System.out.println(user.getCrossellUserPwd());
 	
 		
 		Query queryGet = sessionFactory.getCurrentSession().createQuery(query);
 		queryGet.setString(0, user.getCrossellUserSoeid());
-		//queryGet.setInteger(1, 1);
-	    queryGet.setParameter(1, user.getCrossellUserPwd());//queryGet.setParameter(1,getEncryptedPWD(user.getCrossellUserPwd()));  
-		queryGet.setInteger(2, 1);
+	  //  queryGet.setParameter(1, user.getCrossellUserPwd());//queryGet.setParameter(1,getEncryptedPWD(user.getCrossellUserPwd()));  
+		queryGet.setInteger(1, 1);
 		System.out.println("despues de query valores almacenados en la tabla");
 		System.out.println(queryGet.list());
 		

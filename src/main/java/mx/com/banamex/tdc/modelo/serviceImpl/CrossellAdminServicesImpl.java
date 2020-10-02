@@ -3,6 +3,8 @@ package mx.com.banamex.tdc.modelo.serviceImpl;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.NonUniqueObjectException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import mx.com.banamex.tdc.modelo.repository.ProcesoCrosselRepository;
 import mx.com.banamex.tdc.modelo.service.CrossellAdminService;
 
 public class CrossellAdminServicesImpl implements CrossellAdminService {
+	private static final Logger logger = LogManager.getLogger(CrossellAdminServicesImpl.class);
 	
 	@Autowired
 	CrossellUserRepository crossellUserRepository;
@@ -34,6 +37,10 @@ public class CrossellAdminServicesImpl implements CrossellAdminService {
 
 	public boolean updateUser(CrosselUserEntity user) throws NoSuchAlgorithmException {
 		return crossellUserRepository.updateUser(user);
+	}
+	
+	public boolean deleteUser(CrosselUserEntity user) throws NoSuchAlgorithmException {
+		return crossellUserRepository.deleteUser(user);
 	}
 
 	public boolean login(CrosselUserEntity user) throws NoSuchAlgorithmException {
@@ -90,6 +97,7 @@ public class CrossellAdminServicesImpl implements CrossellAdminService {
 
 	@Override
 	public List<TdcDomBnmx> getAllDominios() {
+		logger.info("CrosselAdminServiceImpl");
 		return dominioRepository.getAllDominios();
 	}
 

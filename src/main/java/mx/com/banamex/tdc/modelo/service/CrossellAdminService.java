@@ -16,6 +16,7 @@ public interface CrossellAdminService {
 
 	public boolean insertUser(CrosselUserEntity user) throws NoSuchAlgorithmException, ConstraintViolationException;
 	public boolean updateUser(CrosselUserEntity user) throws NoSuchAlgorithmException;
+	public boolean deleteUser(CrosselUserEntity user) throws NoSuchAlgorithmException;
 	public boolean login(CrosselUserEntity user) throws NoSuchAlgorithmException;
 	public CrosselUserEntity getUserBySOEID(String soeid);
 	public List<CrosselUserEntity> getAllUsers();

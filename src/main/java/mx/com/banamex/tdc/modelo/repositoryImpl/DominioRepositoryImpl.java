@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 //import org.apache.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.HibernateTemplate;
@@ -27,7 +28,9 @@ public class DominioRepositoryImpl implements DominioRepository{
 
 	@Override
 	public List<TdcDomBnmx> getAllDominios() {
+		log.info("antes de regresar la lista");
 		List<TdcDomBnmx> res = hibernateTemplate.loadAll(TdcDomBnmx.class);
+		log.info("despues de regresar la lista");
 		return res;
 	}
 
@@ -41,6 +44,13 @@ public class DominioRepositoryImpl implements DominioRepository{
 
 	@Override
 	public boolean insertDominioBmx(TdcDomBnmx dom) {
+//		sessionFactory.close();
+//		 sessionFactory.getCurrentSession().clear();
+//		 sessionFactory.getCurrentSession().evict(TdcDomBnmx.class);
+//		sessionFactory.getCurrentSession().refresh(TdcDomBnmx.class);
+//		sessionFactory.getCurrentSession().merge(TdcDomBnmx.class);
+//		System.out.println("AAAA");
+
 		int domId = getAllDominios().size() + 1;
 		System.out.println("antes de insertar");
 		dom.setDomId(domId);

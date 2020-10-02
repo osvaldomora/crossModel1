@@ -18,5 +18,7 @@ public interface CrossellUserRepository {
 	public CrosselUserEntity getUserBySOEID(String soeid);
 	public List<CrosselUserEntity> getAllUsers();
 	public boolean existeSOEID(String soeid);
+	
+	public boolean deleteUser(CrosselUserEntity user) throws NoSuchAlgorithmException;
 
 }
