@@ -35,6 +35,10 @@ public class RepositoryConfig {
 	Environment env;
 	private HibernateTemplate ht;
 	private DataSource ds;
+	
+	@Autowired
+	InitialContext context;
+	
 
 	/*
 	 * @Bean public DataSource getDatasourceConfiguration() {
@@ -55,11 +59,19 @@ public class RepositoryConfig {
 		} catch (InterruptedException e1) {	}		
 		Hashtable<String, String> h = new Hashtable<String, String>();
 		h.put(Context.INITIAL_CONTEXT_FACTORY, "weblogic.jndi.WLInitialContextFactory");
+//	   log.info(h.get(Context.INITIAL_CONTEXT_FACTORY));
+		
+//		h.put(Context.INITIAL_CONTEXT_FACTORY, "com.ibm.websphere.naming.WsnInitialContextFactory");
 		InitialContext context = null;
 		DataSource dataSource = null;
 		try {
+//			new InitialContext();
 			context = new InitialContext(h);
+//			context = new InitialContext();
+//			context.bind(Context.INITIAL_CONTEXT_FACTORY, "weblogic.jndi.WLInitialContextFactory");
+//			log.info(context.lookup("ds_c719_002"));
 			dataSource = (javax.sql.DataSource) context.lookup("ds_c719_002");
+//			log.info("ww"+dataSource);
 			this.ds = dataSource;
 			context.close();
 			log.info("configurando datasource");
@@ -89,6 +101,7 @@ public class RepositoryConfig {
 		asfb.setHibernateProperties(getHibernateProperties());
 		asfb.setDataSource(getDatasourceConfiguration());
 		asfb.setPackagesToScan(new String[] { "mx.com.banamex.tdc.modelo" });
+		log.info(asfb);
 		return asfb;
 	}
 

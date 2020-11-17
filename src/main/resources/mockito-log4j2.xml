@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" name="PropertiesConfiguration">
+	<Properties>
+    	<Property name="filename">crosseladmin.log</Property>
+    	<Property name="directory">/logsCrossel/</Property>
+    	<Property name="level">info</Property>
+  	</Properties>
+ 
+  	<Appenders>
+    	<Console name="STDOUT" target="SYSTEM_OUT" >
+        	<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS}[%-5p][%F:%L]- %m%n"/>
+    	</Console>
+    	<RollingFile name="RollingFile" append="true">
+      		<FileName>${directory}/${filename}</FileName>
+      		<FilePattern>${directory}/${filename}-%d{MM-dd-yy}-%i.log</FilePattern>
+      		<PatternLayout>
+        		<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}[%-5p][%F:%L] - %m%n</Pattern>
+      		</PatternLayout>
+      		<Policies>
+        		<SizeBasedTriggeringPolicy size="50 MB" />
+      		</Policies>
+      		<DefaultRolloverStrategy max="5" />
+    	</RollingFile>
+  	</Appenders>
+ 
+	<Loggers>
+    	<Logger name="appLogger" level="${level}" additivity="false">
+      		<AppenderRef ref="STDOUT" />
+      		<AppenderRef ref="RollingFile" />
+    	</Logger>
+    	<Root level="${level}">
+        	<AppenderRef ref="STDOUT"/>
+        	<AppenderRef ref="RollingFile"/>
+    	</Root>
+  	</Loggers>
+ 
+</Configuration>

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.FlushMode;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.HibernateTemplate;
@@ -20,11 +21,21 @@ public class ProcesoCrosselRepositoryImpl implements ProcesoCrosselRepository {
 
 	@Override
 	public boolean agregaProceso(TdcProcesosEntity entity) {
-		hTemp.getSessionFactory().getCurrentSession().setFlushMode(FlushMode.AUTO);
+		//try {
+		System.out.println("eee");
+		Session se=hTemp.getSessionFactory().getCurrentSession();
+		se.setFlushMode(FlushMode.AUTO);
 		int s = getTamanoProceso() + 1;
 		entity.setTdcProcsId(s);
 		hTemp.save(entity);
 		return true;
+	/*	}
+		
+		catch(Exception e){
+			
+			return false;
+			
+		}*/
 	}
 
 	private int getTamanoProceso() {

@@ -30,16 +30,16 @@ public class CrossellUserRepositoryImpl implements CrossellUserRepository {
 	SessionFactory sessionFactory;
 
 	public boolean insertUser(CrosselUserEntity user) throws NoSuchAlgorithmException, ConstraintViolationException {
-//		user.setCrossellUserPwd(getEncryptedPWD(user.getCrossellUserPwd()));
-		user.setCrossellUserPwd("1");
+		user.setCrossellUserPwd(getEncryptedPWD(user.getCrossellUserPwd()));
+//		user.setCrossellUserPwd("1");
 		hibernateTemplate.save(user);
 		return true;
 	}
 
 	public boolean updateUser(CrosselUserEntity user) throws NoSuchAlgorithmException {
 		try {
-//		user.setCrossellUserPwd(getEncryptedPWD(user.getCrossellUserPwd()));
-//		logger.info("encripto la contraseña "+user.getCrossellUserPwd());
+		user.setCrossellUserPwd(getEncryptedPWD(user.getCrossellUserPwd()));
+		logger.info("encripto la contraseña que se guardara"+user.getCrossellUserPwd());
 		hibernateTemplate.update(user);
 		
 		logger.info("guardo en DB ");
@@ -67,20 +67,20 @@ public class CrossellUserRepositoryImpl implements CrossellUserRepository {
 //CrosselUserEntity
 	@SuppressWarnings("unchecked")//verifica si alguien ya se registro
 	public boolean login(CrosselUserEntity user) throws NoSuchAlgorithmException {
-		//String query = "FROM CrosselUserEntity where crossellUserSoeid=? and crossellUserPwd=? and crosselUserEstatus=?";
-		String query = "FROM CrosselUserEntity where crossellUserSoeid=?  and crosselUserEstatus=?";
+		String query = "FROM CrosselUserEntity where crossellUserSoeid=? and crossellUserPwd=? and crosselUserEstatus=?";
+//		String query = "FROM CrosselUserEntity where crossellUserSoeid=?  and crosselUserEstatus=?";
 //		System.out.println("antes de fROM CrosselUserEntity where crossellUserSoeid=? and crossellUserPwd=? and crosselUserEstatus=?");
-		logger.info(user.getCrossellUserPwd());
-//		user.setCrossellUserPwd(getEncryptedPWD(user.getCrossellUserPwd()));//establece la contra encriptada del loging
-		System.out.println(user.getCrossellUserPwd());
+		logger.info("pass without encript: " + user.getCrossellUserPwd());
+		user.setCrossellUserPwd(getEncryptedPWD(user.getCrossellUserPwd()));//establece la contra encriptada del loging
+		logger.info("pass encript: " +user.getCrossellUserPwd());//pass encript
 	
 		
 		Query queryGet = sessionFactory.getCurrentSession().createQuery(query);
 		queryGet.setString(0, user.getCrossellUserSoeid());
-	  //  queryGet.setParameter(1, user.getCrossellUserPwd());//queryGet.setParameter(1,getEncryptedPWD(user.getCrossellUserPwd()));  
-		queryGet.setInteger(1, 1);
-		System.out.println("despues de query valores almacenados en la tabla");
-		System.out.println(queryGet.list());
+	    queryGet.setParameter(1, user.getCrossellUserPwd());//queryGet.setParameter(1,getEncryptedPWD(user.getCrossellUserPwd()));  
+		queryGet.setInteger(2, 1);
+		logger.info("despues de query valores almacenados en la tabla");
+		logger.info(queryGet.list());
 		
 		List<CrosselUserEntity> lista = (List<CrosselUserEntity>) queryGet.list();
 		
